@@ -1,5 +1,6 @@
 ﻿using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Text.Json;
 
 namespace Annular.Translate;
 
@@ -180,7 +181,7 @@ public class TranslateService
             store.Translations[lang].Merge(translations);
         else
             store.Translations[lang] = translations;
-        store.OnTranslationChange.OnNext(new(lang, translations));
+        store.OnTranslationChange.OnNext(new(lang, store.Translations[lang]));
     }
 
     /// <summary>
