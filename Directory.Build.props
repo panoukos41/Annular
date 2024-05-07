@@ -1,0 +1,54 @@
+<Project>
+  <!--Build-->
+  <PropertyGroup>
+    <LangVersion>preview</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>true</ImplicitUsings>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <Configuration Condition="$(Configuration) == ''">Debug</Configuration>
+    <NoWarn>$(NoWarn);CS8509;IDE0039;IDE0130;IDE0290;IDE0060;RZ10012;IDE0052;BL0007;</NoWarn>
+
+    <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts/default</ArtifactsPath>
+    <ArtifactsPath Condition="$(MSBuildProjectDirectory.Contains('tests'))">$(MSBuildThisFileDirectory)artifacts/tests</ArtifactsPath>
+    <ArtifactsPath Condition="$(MSBuildProjectDirectory.Contains('tools'))">$(MSBuildThisFileDirectory)artifacts/tools</ArtifactsPath>
+    <ArtifactsPath Condition="$(MSBuildProjectDirectory.Contains('samples'))">$(MSBuildThisFileDirectory)artifacts/samples</ArtifactsPath>
+    <ArtifactsPath Condition="$(MSBuildProjectDirectory.Contains('src'))">$(MSBuildThisFileDirectory)artifacts/src</ArtifactsPath>
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+  </PropertyGroup>
+
+  <!-- Repository -->
+  <PropertyGroup>
+    <Authors>Panagiotis Athanasiou</Authors>
+    <Copyright>Copyright (c) 2024 $(Authors)</Copyright>
+    <RepositoryUrl>https://www.github.com/panoukos41/FontAwesome</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryLicense>MIT</RepositoryLicense>
+    <RepositoryDescription>Razor components for the free FontAwesome icons that incorporate the svgs as is.</RepositoryDescription>
+    <RepositoryTags>blazor;angular;components</RepositoryTags>
+  </PropertyGroup>
+
+  <!-- Package -->
+  <PropertyGroup>
+    <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
+    <PackageLicenseExpression>$(RepositoryLicense)</PackageLicenseExpression>
+    <PackageDescription>$(RepositoryDescription)</PackageDescription>
+    <PackageTags>$(RepositoryTags)</PackageTags>
+    <PackageReleaseNotes>$(RepositoryUrl)/releases</PackageReleaseNotes>
+    <!--<PackageIcon></PackageIcon>-->
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <!-- Versioning -->
+  <ItemGroup>
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.6.133" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- SourceLink -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="all" />
+  </ItemGroup>
+</Project>
