@@ -1,11 +1,7 @@
-﻿using System.Buffers;
-
-namespace Annular.Translate;
+﻿namespace Annular.Translate;
 
 public readonly ref struct TranslateString
 {
-    private static readonly SearchValues<char> possibleFormat = SearchValues.Create(['{', '}']);
-
     private readonly string value;
     private readonly List<string?>? interpolateParams;
 
@@ -25,7 +21,7 @@ public readonly ref struct TranslateString
 
     public TranslateString Add(string arg)
     {
-        if (value.AsSpan().IndexOfAny(possibleFormat) is -1) return this;
+        if (!value.Contains('{')) return this;
 
         var @params = interpolateParams ?? [];
         @params.Add(arg);
@@ -34,7 +30,7 @@ public readonly ref struct TranslateString
 
     public TranslateString Add(params string[] args)
     {
-        if (value.AsSpan().IndexOfAny(possibleFormat) is -1) return this;
+        if (!value.Contains('{')) return this;
 
         var @params = interpolateParams ?? [];
         @params.AddRange(args);

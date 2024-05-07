@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
     <RootNamespace>Annular.Translate</RootNamespace>
+    <AssemblyName>$(RootNamespace)</AssemblyName>
     <PackageTags>$(PackageTags);translate;i18n</PackageTags>
   </PropertyGroup>
 
