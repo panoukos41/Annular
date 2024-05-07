@@ -64,9 +64,9 @@ public class TranslateService
     /// <param name="loader">An instance of the loader to use.</param>
     /// <param name="store">An instance of the store (that is supposed to be unique).</param>
     /// <param name="options">Options to configure the current service.</param>
-    public TranslateService(TranslateLoader loader, TranslateStore? store = null, TranslateServiceOptions? options = null)
+    public TranslateService(TranslateLoader? loader = null, TranslateStore? store = null, TranslateServiceOptions? options = null)
     {
-        this.loader = loader;
+        this.loader = loader ?? new EmptyTranslateLoader();
         this.store = store ?? new();
         this.options = options ?? new();
 
