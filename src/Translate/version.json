@@ -3,6 +3,7 @@
   "inherit": true,
   "version": "0.1-dev",
   "pathFilters": [
-    ":/src/Translate"
+    "./*.csproj",
+    "./**/*.cs"
   ]
 }
