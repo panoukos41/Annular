@@ -7,7 +7,7 @@ public abstract class TranslateLoader
     public abstract IObservable<Translations> GetTranslation(string lang);
 }
 
-public sealed class EmptyTranslateLoader : TranslateLoader
+internal sealed class EmptyTranslateLoader : TranslateLoader
 {
     public override IObservable<Translations> GetTranslation(string lang)
     {
