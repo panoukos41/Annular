@@ -1,4 +1,4 @@
-﻿using System.Reactive.Linq;
+using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text.Json;
 
@@ -67,8 +67,8 @@ public class TranslateService
     /// <param name="options">Options to configure the current service.</param>
     public TranslateService(TranslateLoader? loader = null, TranslateStore? store = null, TranslateServiceOptions? options = null)
     {
-        this.loader = loader ?? new EmptyTranslateLoader();
         this.store = store ?? new();
+        this.loader = loader ?? DefaultTranslateLoader.Instance;
         this.options = options ?? new();
 
         if (!string.IsNullOrEmpty(this.options.DefaultLanguage))
