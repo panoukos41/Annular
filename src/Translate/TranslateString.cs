@@ -1,49 +1,53 @@
-﻿namespace Annular.Translate;
+﻿using System.Text.RegularExpressions;
 
-public readonly ref struct TranslateString
+namespace Annular.Translate;
+
+public readonly ref partial struct TranslateString
 {
     private readonly string value;
-    private readonly List<string?>? interpolateParams;
+    private readonly TranslateParameters? parameters;
+    private readonly TranslateParser parser;
 
-    public TranslateString(string value, List<string?>? interpolateParams = null)
+    public TranslateString(string value, TranslateParameters? parameters = null, TranslateParser? parser = null)
     {
         this.value = value;
-        this.interpolateParams = interpolateParams;
+        this.parameters = parameters;
+        this.parser = parser ?? TranslateDefaultParser.Instance;
     }
 
     public override string ToString()
     {
-        if (interpolateParams?.Count is null or 0) return value;
-
-        // todo: Find way to improve this.
-        return string.Format(value, [.. interpolateParams]);
+        return parser.Interpolate(value, parameters);
     }
 
-    public TranslateString Add(string arg)
+    public TranslateString Add(string key, string value)
     {
-        if (!value.Contains('{')) return this;
+        if (parameters is { })
+        {
+            parameters.Set(key, value);
+            return new(this.value, parameters, parser);
+        }
 
-        var @params = interpolateParams ?? [];
-        @params.Add(arg);
-        return new(value, @params);
+#if NET8_0_OR_GREATER
+        if (!ParameterRegex().IsMatch(this.value)) return this;
+#else
+        if (!Regex.IsMatch(this.value, @"{.+?(?=})")) return this;
+#endif
+        return new(this.value, new(key, value), parser);
     }
 
-    public TranslateString Add(params string[] args)
+    public static TranslateString operator |(TranslateString str, (string key, string value) param)
     {
-        if (!value.Contains('{')) return this;
-
-        var @params = interpolateParams ?? [];
-        @params.AddRange(args);
-        return new(value, @params);
-    }
-
-    public static TranslateString operator |(TranslateString str, string param)
-    {
-        return str.Add(param);
+        return str.Add(param.key, param.value);
     }
 
     public static implicit operator string(TranslateString str)
     {
         return str.ToString();
     }
+
+#if NET8_0_OR_GREATER
+    [GeneratedRegex(@"{.+?(?=})")]
+    private static partial Regex ParameterRegex();
+#endif
 }

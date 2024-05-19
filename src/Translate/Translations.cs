@@ -25,10 +25,9 @@ public sealed class Translations : Dictionary<string, string>
     /// <summary>
     /// Returns the parsed result of the translation for a given key.
     /// </summary>
-    public TranslateString GetParsedResult(string key, params string?[] interpolateParams)
+    public TranslateString GetParsedResult(string key, TranslateParameters? parameters = null)
     {
-        // todo: Consider to provide generic arguments overload of this method maybe to TranslatedString too.
-        return new(this[key], [.. interpolateParams]);
+        return new(this[key], parameters);
     }
 
     public static TranslateString operator |(string key, Translations translations)

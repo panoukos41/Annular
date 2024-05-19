@@ -1,6 +1,6 @@
+﻿using Annular.Translate.Defaults;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Text.Json;
 
 namespace Annular.Translate;
 
@@ -8,6 +8,7 @@ public class TranslateService
 {
     private readonly TranslateStore store;
     private readonly TranslateLoader loader;
+    private readonly TranslateParser parser;
     private readonly TranslateCompiler compiler;
     private readonly TranslateServiceOptions options;
 
@@ -65,13 +66,20 @@ public class TranslateService
     /// </summary>
     /// <param name="store">An instance of the store (that is supposed to be unique).</param>
     /// <param name="loader">An instance of the loader to use.</param>
+    /// <param name="parser">An instance of the parser currently used</param>
     /// <param name="compiler">An instance of the compiler currently used</param>
     /// <param name="options">Options to configure the current service.</param>
-    public TranslateService(TranslateLoader? loader = null, TranslateStore? store = null, TranslateServiceOptions? options = null)
+    public TranslateService(
+        TranslateStore? store = null,
+        TranslateLoader? loader = null,
+        TranslateParser? parser = null,
         TranslateCompiler? compiler = null,
+        TranslateServiceOptions? options = null)
     {
         this.store = store ?? new();
         this.loader = loader ?? DefaultTranslateLoader.Instance;
+        this.parser = parser ?? TranslateDefaultParser.Instance;
+        this.compiler = compiler ?? DefaultTranslateCompiler.Instance;
         this.options = options ?? new();
 
         if (!string.IsNullOrEmpty(this.options.DefaultLanguage))
@@ -259,17 +267,16 @@ public class TranslateService
     /// Gets the translated value of a key (or an array of keys)
     /// </summary>
     /// <returns>The translated key.</returns>
-    public IObservable<string> Get(string key, params string?[] interpolateParams)
+    public IObservable<string> Get(string key, TranslateParameters? parameters = null)
     {
         // todo: Implement array version.
-        // check if we are loading a new translation to use
         if (pending && loadingTranslations is { })
         {
-            return loadingTranslations.Select(translations => translations.GetParsedResult(key, interpolateParams).ToString());
+            return loadingTranslations.Select(translations => translations.GetParsedResult(key, parameters).ToString());
         }
         else
         {
-            var r = store.Translations[CurrentLang].GetParsedResult(key, interpolateParams).ToString();
+            var r = store.Translations[CurrentLang].GetParsedResult(key, parameters).ToString();
             return Observable.Return(r);
         }
     }
@@ -279,11 +286,11 @@ public class TranslateService
     /// All rules regarding the current language, the preferred language of even fallback languages will be used except any promise handling.
     /// </summary>
     /// <param name="key"></param>
-    /// <param name="interpolateParams"></param>
+    /// <param name="parameters"></param>
     /// <returns></returns>
-    public string Instant(string key, params string?[] interpolateParams)
+    public string Instant(string key, TranslateParameters? parameters)
     {
-        return store.Translations[CurrentLang].GetParsedResult(key, interpolateParams);
+        return store.Translations[CurrentLang].GetParsedResult(key, parameters);
     }
 
     public static TranslateString operator |(string key, TranslateService service)
