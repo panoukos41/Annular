@@ -8,6 +8,7 @@ public class TranslateService
 {
     private readonly TranslateStore store;
     private readonly TranslateLoader loader;
+    private readonly TranslateCompiler compiler;
     private readonly TranslateServiceOptions options;
 
     private readonly Dictionary<string, IObservable<Translations>> translationRequests = [];
@@ -62,10 +63,12 @@ public class TranslateService
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="loader">An instance of the loader to use.</param>
     /// <param name="store">An instance of the store (that is supposed to be unique).</param>
+    /// <param name="loader">An instance of the loader to use.</param>
+    /// <param name="compiler">An instance of the compiler currently used</param>
     /// <param name="options">Options to configure the current service.</param>
     public TranslateService(TranslateLoader? loader = null, TranslateStore? store = null, TranslateServiceOptions? options = null)
+        TranslateCompiler? compiler = null,
     {
         this.store = store ?? new();
         this.loader = loader ?? DefaultTranslateLoader.Instance;
