@@ -16,7 +16,7 @@ public class TranslateParameters : IReadOnlyDictionary<string, string>
 
     public string this[string key]
     {
-        get => TryGetValue(key, out var value) ? value : string.Empty;
+        get => TryGetValue(key, out var value) ? value : key;
         set => Set(key, value);
     }
 
