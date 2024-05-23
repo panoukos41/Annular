@@ -6,7 +6,7 @@ namespace Annular.Translate;
 
 public class TranslateParameters : IReadOnlyDictionary<string, string>
 {
-    private TranslateParametersBase dictionary;
+    private InternalParameters dictionary;
 
     public int Count => dictionary.Count;
 
@@ -22,12 +22,12 @@ public class TranslateParameters : IReadOnlyDictionary<string, string>
 
     public TranslateParameters()
     {
-        dictionary = TranslateParametersBase.EmptyInstance;
+        dictionary = InternalParameters.EmptyInstance;
     }
 
     public TranslateParameters(string key, string value)
     {
-        dictionary = new TranslateParametersBase.One(new(key, value));
+        dictionary = new InternalParameters.One(new(key, value));
     }
 
     public void Set(string key, string value)
@@ -53,7 +53,7 @@ public class TranslateParameters : IReadOnlyDictionary<string, string>
 
     public void Clear()
     {
-        dictionary = TranslateParametersBase.EmptyInstance;
+        dictionary = InternalParameters.EmptyInstance;
     }
 
     public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
@@ -67,9 +67,9 @@ public class TranslateParameters : IReadOnlyDictionary<string, string>
     }
 }
 
-internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<string, string>>
+internal abstract class InternalParameters : IEnumerable<KeyValuePair<string, string>>
 {
-    public static TranslateParametersBase EmptyInstance { get; } = new Empty();
+    public static InternalParameters EmptyInstance { get; } = new Empty();
 
     public abstract int Count { get; }
 
@@ -77,13 +77,13 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
 
     public abstract IEnumerable<string> Values { get; }
 
-    public abstract TranslateParametersBase Set(string key, string value);
+    public abstract InternalParameters Set(string key, string value);
 
     public abstract bool TryGetValue(string key, [NotNullWhen(true)] out string? value);
 
     public abstract bool TryGetNext(int index, out KeyValuePair<string, string> parameter);
 
-    public abstract TranslateParametersBase TryRemove(string key, out bool success);
+    public abstract InternalParameters TryRemove(string key, out bool success);
 
     protected static bool TrySet(ref KeyValuePair<string, string> parameter, string key, string value)
     {
@@ -132,28 +132,22 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
         return GetEnumerator();
     }
 
-    public struct Enumerator : IEnumerator<KeyValuePair<string, string>>
+    private struct Enumerator : IEnumerator<KeyValuePair<string, string>>
     {
-        private readonly TranslateParametersBase parameters;
+        private readonly InternalParameters parameters;
         private int index = 0;
         private KeyValuePair<string, string> current = default;
 
-        public Enumerator(TranslateParametersBase parameters)
+        public Enumerator(InternalParameters parameters)
         {
             this.parameters = parameters;
         }
 
         public readonly KeyValuePair<string, string> Current => current;
 
-        public bool MoveNext()
-        {
-            return parameters.TryGetNext(index++, out current);
-        }
+        public bool MoveNext() => parameters.TryGetNext(index++, out current);
 
-        public void Reset()
-        {
-            index = 0;
-        }
+        public void Reset() => index = 0;
 
         readonly void IDisposable.Dispose()
         {
@@ -163,7 +157,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
     }
 
     // Empty
-    private class Empty : TranslateParametersBase
+    private class Empty : InternalParameters
     {
         public override int Count { get; } = 0;
 
@@ -171,7 +165,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
 
         public override IEnumerable<string> Values => [];
 
-        public override TranslateParametersBase Set(string key, string value)
+        public override InternalParameters Set(string key, string value)
         {
             return new One(new(key, value));
         }
@@ -182,7 +176,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
             return false;
         }
 
-        public override TranslateParametersBase TryRemove(string key, out bool success)
+        public override InternalParameters TryRemove(string key, out bool success)
         {
             success = false;
             return this;
@@ -196,7 +190,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
     }
 
     // One
-    public class One : TranslateParametersBase
+    public class One : InternalParameters
     {
         private KeyValuePair<string, string> parameter1;
 
@@ -211,7 +205,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
             parameter1 = parameter;
         }
 
-        public override TranslateParametersBase Set(string key, string value)
+        public override InternalParameters Set(string key, string value)
         {
             if (TrySet(ref parameter1, key, value))
             {
@@ -229,7 +223,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
             return false;
         }
 
-        public override TranslateParametersBase TryRemove(string key, out bool success)
+        public override InternalParameters TryRemove(string key, out bool success)
         {
             if (TryRemove(ref parameter1, key, out success))
                 return EmptyInstance;
@@ -248,7 +242,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
     }
 
     // Two
-    private class Two : TranslateParametersBase
+    private class Two : InternalParameters
     {
         private KeyValuePair<string, string> parameter1, parameter2;
 
@@ -264,7 +258,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
             this.parameter2 = parameter2;
         }
 
-        public override TranslateParametersBase Set(string key, string value)
+        public override InternalParameters Set(string key, string value)
         {
             if (TrySet(ref parameter1, key, value) ||
                 TrySet(ref parameter2, key, value))
@@ -284,7 +278,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
             return false;
         }
 
-        public override TranslateParametersBase TryRemove(string key, out bool success)
+        public override InternalParameters TryRemove(string key, out bool success)
         {
             if (TryRemove(ref parameter1, key, out success))
                 return new One(parameter2);
@@ -306,7 +300,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
     }
 
     // Three
-    private class Three : TranslateParametersBase
+    private class Three : InternalParameters
     {
         private KeyValuePair<string, string> parameter1, parameter2, parameter3;
 
@@ -323,7 +317,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
             this.parameter3 = parameter3;
         }
 
-        public override TranslateParametersBase Set(string key, string value)
+        public override InternalParameters Set(string key, string value)
         {
             if (TrySet(ref parameter1, key, value) ||
                 TrySet(ref parameter2, key, value) ||
@@ -345,7 +339,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
             return false;
         }
 
-        public override TranslateParametersBase TryRemove(string key, out bool success)
+        public override InternalParameters TryRemove(string key, out bool success)
         {
             if (TryRemove(ref parameter1, key, out success))
                 return new Two(parameter2, parameter3);
@@ -370,7 +364,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
     }
 
     // Four
-    private class Four : TranslateParametersBase
+    private class Four : InternalParameters
     {
         private KeyValuePair<string, string> parameter1, parameter2, parameter3, parameter4;
 
@@ -388,7 +382,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
             this.parameter4 = parameter4;
         }
 
-        public override TranslateParametersBase Set(string key, string value)
+        public override InternalParameters Set(string key, string value)
         {
             if (TrySet(ref parameter1, key, value) ||
                 TrySet(ref parameter2, key, value) ||
@@ -412,7 +406,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
             return false;
         }
 
-        public override TranslateParametersBase TryRemove(string key, out bool success)
+        public override InternalParameters TryRemove(string key, out bool success)
         {
             if (TryRemove(ref parameter1, key, out success))
                 return new Three(parameter2, parameter3, parameter4);
@@ -440,7 +434,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
     }
 
     // Five
-    private class Five : TranslateParametersBase
+    private class Five : InternalParameters
     {
         private KeyValuePair<string, string> parameter1, parameter2, parameter3, parameter4, parameter5;
 
@@ -459,7 +453,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
             this.parameter5 = parameter5;
         }
 
-        public override TranslateParametersBase Set(string key, string value)
+        public override InternalParameters Set(string key, string value)
         {
             if (TrySet(ref parameter1, key, value) ||
                 TrySet(ref parameter2, key, value) ||
@@ -485,7 +479,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
             return false;
         }
 
-        public override TranslateParametersBase TryRemove(string key, out bool success)
+        public override InternalParameters TryRemove(string key, out bool success)
         {
             if (TryRemove(ref parameter1, key, out success))
                 return new Four(parameter2, parameter3, parameter4, parameter5);
@@ -516,9 +510,8 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
     }
 
     // Many
-    private class Many : TranslateParametersBase
+    private class Many : InternalParameters
     {
-        //private readonly System.Collections.ObjectModel.KeyedCollection<string, KeyValuePair<string, string>> parameters;
         private readonly Dictionary<string, string> parameters;
 
         public override int Count => parameters.Count;
@@ -540,7 +533,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
             };
         }
 
-        public override TranslateParametersBase Set(string key, string value)
+        public override InternalParameters Set(string key, string value)
         {
             parameters[key] = value;
             return this;
@@ -551,7 +544,7 @@ internal abstract class TranslateParametersBase : IEnumerable<KeyValuePair<strin
             return parameters.TryGetValue(key, out value);
         }
 
-        public override TranslateParametersBase TryRemove(string key, out bool success)
+        public override InternalParameters TryRemove(string key, out bool success)
         {
             success = parameters.Remove(key);
             return this;
