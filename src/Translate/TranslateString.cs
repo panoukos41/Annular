@@ -31,7 +31,7 @@ public readonly ref partial struct TranslateString
 #if NET8_0_OR_GREATER
         if (!ParameterRegex().IsMatch(this.value)) return this;
 #else
-        if (!Regex.IsMatch(this.value, @"{.+?(?=})")) return this;
+        if (!Regex.IsMatch(this.value, regex)) return this;
 #endif
         return new(this.value, new(key, value), parser);
     }
@@ -46,8 +46,10 @@ public readonly ref partial struct TranslateString
         return str.ToString();
     }
 
+    private const string regex = "{[^\n ]+}";
+
 #if NET8_0_OR_GREATER
-    [GeneratedRegex(@"{.+?(?=})")]
+    [GeneratedRegex(regex)]
     private static partial Regex ParameterRegex();
 #endif
 }
