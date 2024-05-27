@@ -15,6 +15,6 @@ on:
 jobs:
   build:
     name: Build
-    uses: panoukos41/Annular/.github/workflows/_ci.yaml@main
+    uses: panoukos41/Annular/.github/workflows/_ci.yaml@dev
     with:
       project: src/Translate
