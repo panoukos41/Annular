@@ -43,7 +43,7 @@ jobs:
 
       - name: Build
         working-directory: ${{ inputs.project }}
-        run: dotnet build -c Release --no-restore
+        run: dotnet build -c Release
 
       # - name: Test
       #   working-directory: ${{ inputs.project }}
