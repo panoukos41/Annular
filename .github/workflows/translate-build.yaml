@@ -6,60 +6,15 @@ env:
 on:
   workflow_dispatch:
   pull_request:
-    branches: [main]
+    branches: [main, dev]
     paths:
       - "src/Translate/version.json"
       - "src/Translate/*.cs"
       - "src/Translate/*.csproj"
-  workflow_call:
-    inputs:
-      cache:
-        description: Whether to cache nuget or not
-        default: false
-        type: boolean
-      upload:
-        description: Whether to upload /src/artifacts or not
-        default: false
-        type: boolean
-    outputs:
-      artifacts-id:
-        description: The /src/artifacts id
-        value: ${{ jobs.build.outputs.artifacts-id }}
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    outputs:
-      artifacts-id: ${{ steps.upload-artifacts.outputs.artifact-id }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v4.0.0
-        with: 
-          dotnet-version: 8.0.x
-          cache: ${{ inputs.cache }}
-
-      - name: Nerdbank.GitVersioning
-        uses: dotnet/nbgv@v0.4.2
-        id: nbgv
-        with: { setAllVars: true }
-
-      - name: Build
-        working-directory: src/Translate
-        run: dotnet build -c Release
-
-      # todo: Add tests
-
-      - name: Upload Artifacts
-        id: upload-artifacts
-        if: ${{ inputs.upload }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: translate-artifacts
-          path: /src/artifacts
-          retention-days: 1
-          overwrite: true
+    name: Build
+    uses: panoukos41/Annular/.github/workflows/_ci.yaml@main
+    with:
+      project: src/Translate
