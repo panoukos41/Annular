@@ -1,4 +1,4 @@
-name: Translate Build Workflow
+name: Build
 
 env:
   DOTNET_NOLOGO: true

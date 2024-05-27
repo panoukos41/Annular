@@ -1,4 +1,4 @@
-name: Translate Publish Workflow
+name: Publish
 
 env:
   DOTNET_NOLOGO: true
