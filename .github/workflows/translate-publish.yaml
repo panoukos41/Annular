@@ -19,3 +19,4 @@ jobs:
     with:
       project: src/Translate
       publish: true
+    secrets: inherit
