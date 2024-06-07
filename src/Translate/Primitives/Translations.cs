@@ -30,11 +30,6 @@ public sealed class Translations : Dictionary<string, string>
         return new(this[key], parameters);
     }
 
-    public static TranslateString operator |(string key, Translations translations)
-    {
-        return translations.GetParsedResult(key);
-    }
-
     /// <summary>
     /// Create a <see cref="Translations"/> object from a <see cref="JsonDocument"/>.
     /// </summary>
