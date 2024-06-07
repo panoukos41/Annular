@@ -25,7 +25,7 @@
     <RepositoryUrl>https://www.github.com/panoukos41/FontAwesome</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryLicense>MIT</RepositoryLicense>
-    <RepositoryDescription>Razor components for the free FontAwesome icons that incorporate the svgs as is.</RepositoryDescription>
+    <RepositoryDescription>Project to port great features, component, ideas and libs from the Angular ecosystem to Blazor and .NET.</RepositoryDescription>
     <RepositoryTags>blazor;angular;components</RepositoryTags>
   </PropertyGroup>
 
