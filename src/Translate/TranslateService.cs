@@ -16,8 +16,6 @@ public class TranslateService
     private readonly TranslateServiceOptions options;
 
     private readonly Dictionary<string, IObservable<Translations>> translationRequests = [];
-    private IObservable<Translations>? loadingTranslations;
-    private bool pending;
 
     /// <summary>
     /// The default lang to fallback when translations are missing on the current lang.
@@ -152,7 +150,8 @@ public class TranslateService
         IObservable<Translations>? pending = null;
 
         // if this language is unavailable ask for it.
-        if (!store.Translations.ContainsKey(lang) && !translationRequests.TryGetValue(lang, out pending))
+        if (store.Translations.ContainsKey(lang) is false &&
+            translationRequests.TryGetValue(lang, out pending) is false)
         {
             translationRequests[lang] = pending = GetTranslation(lang);
         }
@@ -163,23 +162,20 @@ public class TranslateService
     /// Gets translations for a given language with the current loader.
     /// </summary>
     /// <param name="lang">The lang to load.</param>
-    /// <param name="merge">Whether to merge the new translations to the currently loaded translations.</param>
+    /// <param name="merge">Whether to merge to the to the current translations or replace them.</param>
     public IObservable<Translations> GetTranslation(string lang, bool merge = false)
     {
-        pending = true;
         Langs.Add(lang);
-        return loadingTranslations = loader
+        return loader
             .GetTranslation(lang)
             .Do(translations =>
             {
-                store.Translations[lang] = translations; // todo: Implement merge
-                pending = false;
+                if (merge)
+                    store.Translations[lang].Merge(translations);
+                else
+                    store.Translations[lang] = translations;
             })
-            .Catch<Translations, Exception>(ex =>
-            {
-                pending = false;
-                return Observable.Throw<Translations>(ex);
-            })
+            .Catch<Translations, Exception>(Observable.Throw<Translations>)
             .Replay()
             .AutoConnect()
             .Take(1);
@@ -273,15 +269,13 @@ public class TranslateService
     public IObservable<string> Get(string key, TranslateParameters? parameters = null)
     {
         // todo: Implement array version.
-        if (pending && loadingTranslations is { })
+        if (RetrieveTranslations(CurrentLang) is { } pending)
         {
-            return loadingTranslations.Select(translations => translations.GetParsedResult(key, parameters).ToString());
+            return pending.Take(1).Select(translations => translations.GetParsedResult(key, parameters).ToString());
         }
-        else
-        {
-            var r = store.Translations[CurrentLang].GetParsedResult(key, parameters).ToString();
-            return Observable.Return(r);
-        }
+
+        var r = store.Translations[CurrentLang].GetParsedResult(key, parameters).ToString();
+        return Observable.Return(r);
     }
 
     /// <summary>
