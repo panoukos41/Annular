@@ -153,7 +153,7 @@ public class TranslateService
         if (store.Translations.ContainsKey(lang) is false &&
             translationRequests.TryGetValue(lang, out pending) is false)
         {
-            translationRequests[lang] = pending = GetTranslation(lang);
+            translationRequests[lang] = pending = LoadTranslation(lang);
         }
         return pending;
     }
@@ -163,7 +163,7 @@ public class TranslateService
     /// </summary>
     /// <param name="lang">The lang to load.</param>
     /// <param name="merge">Whether to merge to the to the current translations or replace them.</param>
-    public IObservable<Translations> GetTranslation(string lang, bool merge = false)
+    public IObservable<Translations> LoadTranslation(string lang, bool merge = false)
     {
         Langs.Add(lang);
         return loader
@@ -250,7 +250,7 @@ public class TranslateService
     public IObservable<Translations> ReloadLang(string lang)
     {
         ResetLang(lang);
-        return GetTranslation(lang);
+        return LoadTranslation(lang);
     }
 
     /// <summary>
