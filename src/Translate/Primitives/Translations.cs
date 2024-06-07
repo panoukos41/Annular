@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Annular.Translate;
+namespace Annular.Translate.Primitives;
 
 public sealed class Translations : Dictionary<string, string>
 {

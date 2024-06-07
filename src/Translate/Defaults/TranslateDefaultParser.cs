@@ -1,6 +1,8 @@
 ﻿using System.Text;
+using Annular.Translate.Abstract;
+using Annular.Translate.Primitives;
 
-namespace Annular.Translate;
+namespace Annular.Translate.Defaults;
 
 public sealed class TranslateDefaultParser : TranslateParser
 {

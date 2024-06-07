@@ -1,4 +1,7 @@
-﻿using Annular.Translate.Defaults;
+﻿using Annular.Translate.Abstract;
+using Annular.Translate.Defaults;
+using Annular.Translate.Events;
+using Annular.Translate.Primitives;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
@@ -62,7 +65,7 @@ public class TranslateService
     public Subject<TranslationChangeEvent> OnDefaultLangChange => store.OnDefaultLangChange;
 
     /// <summary>
-    /// 
+    /// Initialize a new 
     /// </summary>
     /// <param name="store">An instance of the store (that is supposed to be unique).</param>
     /// <param name="loader">An instance of the loader to use.</param>

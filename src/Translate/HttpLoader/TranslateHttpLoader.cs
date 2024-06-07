@@ -1,6 +1,8 @@
 ﻿using System.Net.Http.Json;
 using System.Reactive.Linq;
 using System.Text.Json;
+using Annular.Translate.Abstract;
+using Annular.Translate.Primitives;
 
 namespace Annular.Translate.HttpLoader;
 

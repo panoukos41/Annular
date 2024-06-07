@@ -1,6 +1,9 @@
-﻿namespace Annular.Translate.Defaults;
+﻿using Annular.Translate.Abstract;
+using Annular.Translate.Primitives;
 
-internal sealed class DefaultTranslateCompiler : TranslateCompiler
+namespace Annular.Translate.Defaults;
+
+public sealed class DefaultTranslateCompiler : TranslateCompiler
 {
     public static DefaultTranslateCompiler Instance { get; } = new();
 
