@@ -7,6 +7,8 @@
     "^refs/heads/main$",
     "^refs/heads/dev$"
   ],
+  "pathFilters": [ "." ],
+  "versionHeightOffset": -1,
   "cloudBuild": {
     "setVersionVariables": true,
     "buildNumber": {
