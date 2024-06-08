@@ -1,5 +1,5 @@
 <Project>
-  <!--Build-->
+
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
@@ -44,13 +44,4 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
-  <!-- Versioning -->
-  <ItemGroup>
-    <PackageReference Include="Nerdbank.GitVersioning" Version="3.6.139" PrivateAssets="all" />
-  </ItemGroup>
-
-  <!-- SourceLink -->
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="all" />
-  </ItemGroup>
 </Project>
