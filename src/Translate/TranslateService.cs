@@ -16,6 +16,7 @@ public class TranslateService
     private readonly TranslateServiceOptions options;
 
     private readonly Dictionary<string, IObservable<Translations>> translationRequests = [];
+    private readonly Dictionary<string, IObservable<Translations>> translationsLoading = [];
 
     /// <summary>
     /// The default lang to fallback when translations are missing on the current lang.
@@ -162,23 +163,36 @@ public class TranslateService
     /// Gets translations for a given language with the current loader.
     /// </summary>
     /// <param name="lang">The lang to load.</param>
-    /// <param name="merge">Whether to merge to the to the current translations or replace them.</param>
+    /// <param name="merge">Whether to merge with the the current translations or replace them.</param>
+    /// <remarks>
+    /// If there is already a loading request it will be returned.
+    /// You can call <see cref="ResetLang(string)"/> to cancel it and load again.
+    /// </remarks>
     public IObservable<Translations> LoadTranslation(string lang, bool merge = false)
     {
         Langs.Add(lang);
-        return loader
-            .GetTranslation(lang)
-            .Do(translations =>
-            {
-                if (merge)
-                    store.Translations[lang].Merge(translations);
-                else
-                    store.Translations[lang] = translations;
-            })
-            .Catch<Translations, Exception>(Observable.Throw<Translations>)
-            .Replay()
-            .AutoConnect()
-            .Take(1);
+
+        if (translationsLoading.TryGetValue(lang, out var pending) is false)
+        {
+            translationsLoading[lang] = pending = loader
+                .GetTranslation(lang)
+                .Do(translations =>
+                {
+                    if (merge)
+                        store.Translations[lang].Merge(translations);
+                    else
+                        store.Translations[lang] = translations;
+
+                    translationsLoading.Remove(lang);
+                })
+                .Catch<Translations, Exception>(Observable.Throw<Translations>)
+                .Replay()
+                .AutoConnect()
+                .Take(1);
+        }
+        return pending;
+
+
     }
 
     /// <summary>
@@ -247,10 +261,13 @@ public class TranslateService
     /// <summary>
     /// Reloads the provided <paramref name="lang"/>.
     /// </summary>
-    public IObservable<Translations> ReloadLang(string lang)
+    /// <param name="lang">The lang to re-load.</param>
+    /// <param name="merge">Whether to merge with the the current translations or replace them.</param>
+    public IObservable<Translations> ReloadLang(string lang, bool merge = false)
     {
         ResetLang(lang);
-        return LoadTranslation(lang);
+        translationsLoading.Remove(lang);
+        return LoadTranslation(lang, merge);
     }
 
     /// <summary>
