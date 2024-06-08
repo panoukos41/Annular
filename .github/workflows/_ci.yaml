@@ -40,7 +40,9 @@ jobs:
         if: ${{ inputs.publish }}
         uses: dotnet/nbgv@v0.4.2
         id: nbgv
-        with: { setAllVars: true }
+        with:
+          setAllVars: true
+          path: ${{ inputs.project }}
 
       - name: Build
         working-directory: ${{ inputs.project }}
