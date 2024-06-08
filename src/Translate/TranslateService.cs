@@ -2,6 +2,7 @@
 using Annular.Translate.Defaults;
 using Annular.Translate.Events;
 using Annular.Translate.Primitives;
+using System.Collections.Concurrent;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
@@ -15,8 +16,8 @@ public class TranslateService
     private readonly TranslateCompiler compiler;
     private readonly TranslateServiceOptions options;
 
-    private readonly Dictionary<string, IObservable<Translations>> translationRequests = [];
-    private readonly Dictionary<string, IObservable<Translations>> translationsLoading = [];
+    private readonly ConcurrentDictionary<string, IObservable<Translations>> translationRequests = [];
+    private readonly ConcurrentDictionary<string, IObservable<Translations>> translationsLoading = [];
 
     /// <summary>
     /// The default lang to fallback when translations are missing on the current lang.
@@ -183,7 +184,7 @@ public class TranslateService
                     else
                         store.Translations[lang] = translations;
 
-                    translationsLoading.Remove(lang);
+                    translationsLoading.TryRemove(lang, out _);
                 })
                 .Catch<Translations, Exception>(Observable.Throw<Translations>)
                 .Replay()
@@ -191,8 +192,6 @@ public class TranslateService
                 .Take(1);
         }
         return pending;
-
-
     }
 
     /// <summary>
@@ -266,16 +265,18 @@ public class TranslateService
     public IObservable<Translations> ReloadLang(string lang, bool merge = false)
     {
         ResetLang(lang);
-        translationsLoading.Remove(lang);
+        translationsLoading.TryRemove(lang, out _);
         return LoadTranslation(lang, merge);
     }
 
     /// <summary>
-    /// Deletes inner translations For provided <paramref name="lang"/>.
+    /// Deletes inner translations for the provided <paramref name="lang"/>.
     /// </summary>
+    /// <param name="lang">The language key to reset.</param>
     public void ResetLang(string lang)
     {
-        translationRequests.Remove(lang);
+        translationRequests.TryRemove(lang, out _);
+        translationsLoading.TryRemove(lang, out _);
         store.Translations[lang].Clear();
     }
 
