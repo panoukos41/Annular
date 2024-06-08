@@ -37,6 +37,7 @@ jobs:
         with: { dotnet-version: 8.0.x }
 
       - name: Nerdbank.GitVersioning
+        if: ${{ inputs.publish }}
         uses: dotnet/nbgv@v0.4.2
         id: nbgv
         with: { setAllVars: true }
