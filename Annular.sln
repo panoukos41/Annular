@@ -22,7 +22,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{5089
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{048A1207-56E9-4C99-9299-21F7D1EBD164}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\translate.yaml = .github\workflows\translate.yaml
+		.github\workflows\_ci.yaml = .github\workflows\_ci.yaml
+		.github\workflows\translate-build.yaml = .github\workflows\translate-build.yaml
+		.github\workflows\translate-publish.yaml = .github\workflows\translate-publish.yaml
 	EndProjectSection
 EndProject
 Global
@@ -39,19 +41,6 @@ Global
 		{161774C6-E186-47AC-9C7F-BC7568725E47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{161774C6-E186-47AC-9C7F-BC7568725E47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{161774C6-E186-47AC-9C7F-BC7568725E47}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-EndGlobal
-}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C74B88C-002C-467D-B848-32CA23981889}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3C74B88C-002C-467D-B848-32CA23981889}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C74B88C-002C-467D-B848-32CA23981889}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

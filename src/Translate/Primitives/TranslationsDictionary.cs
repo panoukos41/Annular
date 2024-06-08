@@ -1,4 +1,4 @@
-﻿namespace Annular.Translate;
+﻿namespace Annular.Translate.Primitives;
 
 public sealed class TranslationsDictionary : Dictionary<string, Translations>
 {

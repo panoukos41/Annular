@@ -1,4 +1,6 @@
-﻿namespace Annular.Translate;
+﻿using Annular.Translate.Primitives;
+
+namespace Annular.Translate.Events;
 
 public class TranslationChangeEvent : EventArgs
 {

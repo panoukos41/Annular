@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Annular.Translate;
+namespace Annular.Translate.Primitives;
 
 public sealed class Translations : Dictionary<string, string>
 {
@@ -28,11 +28,6 @@ public sealed class Translations : Dictionary<string, string>
     public TranslateString GetParsedResult(string key, TranslateParameters? parameters = null)
     {
         return new(this[key], parameters);
-    }
-
-    public static TranslateString operator |(string key, Translations translations)
-    {
-        return translations.GetParsedResult(key);
     }
 
     /// <summary>

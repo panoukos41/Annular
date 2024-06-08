@@ -1,6 +1,8 @@
 ﻿using System.Text.RegularExpressions;
+using Annular.Translate.Abstract;
+using Annular.Translate.Defaults;
 
-namespace Annular.Translate;
+namespace Annular.Translate.Primitives;
 
 public readonly ref partial struct TranslateString
 {

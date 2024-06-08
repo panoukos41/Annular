@@ -1,4 +1,6 @@
 ﻿using System.Reactive.Subjects;
+using Annular.Translate.Events;
+using Annular.Translate.Primitives;
 
 namespace Annular.Translate;
 
@@ -31,7 +33,7 @@ public class TranslateStore
     public TranslationsDictionary Translations { get; set; } = [];
 
     /// <summary>
-    /// An list of available languages.
+    /// A list of available languages.
     /// </summary>
     public HashSet<string> Langs { get; } = [];
 

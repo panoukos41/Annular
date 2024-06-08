@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
-namespace Annular.Translate;
+namespace Annular.Translate.Primitives;
 
 public class TranslateParameters : IReadOnlyDictionary<string, string>
 {
