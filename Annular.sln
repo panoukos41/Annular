@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{86785773-2
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
 		global.json = global.json
 		LICENSE = LICENSE
 		README.md = README.md
@@ -22,31 +23,40 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{5089
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{048A1207-56E9-4C99-9299-21F7D1EBD164}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\_ci.yaml = .github\workflows\_ci.yaml
 		.github\workflows\translate-build.yaml = .github\workflows\translate-build.yaml
 		.github\workflows\translate-publish.yaml = .github\workflows\translate-publish.yaml
+		.github\workflows\_ci.yaml = .github\workflows\_ci.yaml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1F537D1F-2DE3-4F35-821A-AC3EF4701BE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Translate", "tests\Translate\Translate.csproj", "{4AE16CE9-FC84-41D9-9454-932FDE2A8B2D}"
+EndProject
 Global
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {201C2D68-0B9C-4F54-AD5A-0351C0A4082B}
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{048A1207-56E9-4C99-9299-21F7D1EBD164} = {50896D86-F815-4AB7-B33C-B989806A1503}
-		{161774C6-E186-47AC-9C7F-BC7568725E47} = {A5F23231-E7AB-4B51-B72A-5464351CEE29}
-		{50896D86-F815-4AB7-B33C-B989806A1503} = {86785773-2DA2-43DC-952A-AF24D4740C69}
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{161774C6-E186-47AC-9C7F-BC7568725E47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{161774C6-E186-47AC-9C7F-BC7568725E47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{161774C6-E186-47AC-9C7F-BC7568725E47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{161774C6-E186-47AC-9C7F-BC7568725E47}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		{4AE16CE9-FC84-41D9-9454-932FDE2A8B2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AE16CE9-FC84-41D9-9454-932FDE2A8B2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AE16CE9-FC84-41D9-9454-932FDE2A8B2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AE16CE9-FC84-41D9-9454-932FDE2A8B2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{161774C6-E186-47AC-9C7F-BC7568725E47} = {A5F23231-E7AB-4B51-B72A-5464351CEE29}
+		{50896D86-F815-4AB7-B33C-B989806A1503} = {86785773-2DA2-43DC-952A-AF24D4740C69}
+		{048A1207-56E9-4C99-9299-21F7D1EBD164} = {50896D86-F815-4AB7-B33C-B989806A1503}
+		{4AE16CE9-FC84-41D9-9454-932FDE2A8B2D} = {1F537D1F-2DE3-4F35-821A-AC3EF4701BE6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {201C2D68-0B9C-4F54-AD5A-0351C0A4082B}
 	EndGlobalSection
 EndGlobal
