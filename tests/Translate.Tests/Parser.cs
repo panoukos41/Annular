@@ -1,5 +1,5 @@
 ﻿namespace Annular.Translate.Tests;
 
-public sealed class TranslateStoreTests
+public sealed class Parser
 {
 }
