@@ -104,14 +104,9 @@ public class TranslateService
         {
             // on init set the defaultLang immediately
             if (string.IsNullOrEmpty(DefaultLang))
-            {
-                store.DefaultLang = lang;
-            }
-            pending.Take(1).Subscribe(res =>
-            {
                 ChangeDefaultLang(lang);
-            });
-            return pending;
+
+            return pending.Do(translations => ChangeDefaultLang(lang));
         }
         // we already have this language
         ChangeDefaultLang(lang);
@@ -129,15 +124,11 @@ public class TranslateService
         }
         if (RetrieveTranslations(lang) is { } pending)
         {
+            // on init set the defaultLang immediately
             if (string.IsNullOrEmpty(CurrentLang))
-            {
-                store.CurrentLang = lang;
-            }
-            pending.Take(1).Subscribe(translations =>
-            {
                 ChangeLang(lang);
-            });
-            return pending;
+
+            return pending.Do(translations => ChangeLang(lang));
         }
         // we already have this language
         ChangeLang(lang);
@@ -173,25 +164,22 @@ public class TranslateService
     {
         Langs.Add(lang);
 
-        if (translationsLoading.TryGetValue(lang, out var pending) is false)
-        {
-            translationsLoading[lang] = pending = loader
-                .GetTranslation(lang)
-                .Do(translations =>
-                {
-                    if (merge)
-                        store.Translations[lang].Merge(translations);
-                    else
-                        store.Translations[lang] = translations;
+        return translationsLoading
+            .GetOrAdd(lang, lang => loader
+            .GetTranslation(lang)
+            .Do(translations =>
+            {
+                if (merge)
+                    store.Translations[lang].Merge(translations);
+                else
+                    store.Translations[lang] = translations;
 
-                    translationsLoading.TryRemove(lang, out _);
-                })
-                .Catch<Translations, Exception>(Observable.Throw<Translations>)
-                .Replay()
-                .AutoConnect()
-                .Take(1);
-        }
-        return pending;
+                translationsLoading.TryRemove(lang, out _);
+            })
+            .Catch<Translations, Exception>(Observable.Throw<Translations>)
+            .Replay()
+            .AutoConnect()
+            .Take(1));
     }
 
     /// <summary>
@@ -234,6 +222,8 @@ public class TranslateService
     /// </summary>
     private void ChangeLang(string lang)
     {
+        if (store.CurrentLang == lang) return;
+
         store.CurrentLang = lang;
         store.OnLangChange.OnNext(new(lang, store.Translations[lang]));
         // if there is no default lang, use the one that we just set
@@ -248,6 +238,8 @@ public class TranslateService
     /// </summary>
     private void ChangeDefaultLang(string lang)
     {
+        if (store.DefaultLang == lang) return;
+
         store.DefaultLang = lang;
         store.OnDefaultLangChange.OnNext(new(lang, store.Translations[lang]));
         // if there is no current lang, use the one that we just set
@@ -281,7 +273,7 @@ public class TranslateService
     }
 
     /// <summary>
-    /// Gets the translated value of a key (or an array of keys)
+    /// Gets the translated value of a key.
     /// </summary>
     /// <returns>The translated key.</returns>
     public IObservable<string> Get(string key, TranslateParameters? parameters = null)
