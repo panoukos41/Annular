@@ -10,4 +10,5 @@ The project name [Annular](https://words.bighugelabs.com/annular) is an [antonym
 | Package (port) | Usage | CI | Package |
 | --             | --    | -- | --      |
 | [Forms](https://angular.io/guide/reactive-forms) | [README](./src/Forms/README.md) | - | - | - |
+| [Modules](https://angular.io/guide/ngmodules) | [README](./src/Modules/README.md) | [![Publish](https://github.com/panoukos41/Annular/actions/workflows/modules-publish.yaml/badge.svg?branch=main)](https://github.com/panoukos41/Annular/actions/workflows/modules-publish.yaml) | [![NuGet](https://buildstats.info/nuget/Annular.Modules)](https://www.nuget.org/packages/Annular.Modules) |
 | [Translate](https://github.com/ngx-translate/core) | [README](./src/Translate/README.md) | [![Publish](https://github.com/panoukos41/Annular/actions/workflows/translate-publish.yaml/badge.svg?branch=main)](https://github.com/panoukos41/Annular/actions/workflows/translate-publish.yaml) | [![NuGet](https://buildstats.info/nuget/Annular.Translate)](https://www.nuget.org/packages/Annular.Translate) |
