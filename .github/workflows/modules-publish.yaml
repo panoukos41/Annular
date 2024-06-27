@@ -14,7 +14,7 @@ on:
 
 jobs:
   publish:
-    name: Publish
+    name: Modules Publish
     uses: panoukos41/Annular/.github/workflows/_ci.yaml@dev
     with:
       project: src/Modules
