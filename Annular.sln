@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{5089
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{048A1207-56E9-4C99-9299-21F7D1EBD164}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\modules-build.yaml = .github\workflows\modules-build.yaml
+		.github\workflows\modules-publish.yaml = .github\workflows\modules-publish.yaml
 		.github\workflows\translate-build.yaml = .github\workflows\translate-build.yaml
 		.github\workflows\translate-publish.yaml = .github\workflows\translate-publish.yaml
 		.github\workflows\_ci.yaml = .github\workflows\_ci.yaml
@@ -32,7 +34,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modules", "src\Modules\Modu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{640EFD81-97E6-459A-82A4-1E519C20FB34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Tests", "tests\Modules.Tests\Modules.Tests.csproj", "{E98FB703-21F8-4939-89D4-E6DD68CE213D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modules.Tests", "tests\Modules.Tests\Modules.Tests.csproj", "{E98FB703-21F8-4939-89D4-E6DD68CE213D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
