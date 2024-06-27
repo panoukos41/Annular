@@ -1,4 +1,4 @@
-name: Translate Publish
+name: Modules Publish
 
 env:
   DOTNET_NOLOGO: true
@@ -8,15 +8,16 @@ on:
   push:
     branches: [main, dev]
     paths:
-      - "src/Translate/version.json"
-      - "src/Translate/*.cs"
-      - "src/Translate/*.csproj"
+      - "src/Modules/version.json"
+      - "src/Modules/*.cs"
+      - "src/Modules/*.csproj"
 
 jobs:
   publish:
     name: Publish
     uses: panoukos41/Annular/.github/workflows/_ci.yaml@dev
     with:
-      project: src/Translate
+      project: src/Modules
+      test-project: tests/Modules.Tests
       publish: true
     secrets: inherit

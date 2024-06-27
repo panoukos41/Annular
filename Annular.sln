@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{86785773-2
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
 		global.json = global.json
 		LICENSE = LICENSE
 		README.md = README.md
@@ -22,31 +23,47 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{5089
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{048A1207-56E9-4C99-9299-21F7D1EBD164}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\_ci.yaml = .github\workflows\_ci.yaml
 		.github\workflows\translate-build.yaml = .github\workflows\translate-build.yaml
 		.github\workflows\translate-publish.yaml = .github\workflows\translate-publish.yaml
+		.github\workflows\_ci.yaml = .github\workflows\_ci.yaml
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modules", "src\Modules\Modules.csproj", "{66D81DF4-A151-4A8B-891E-D55D9C449A50}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{640EFD81-97E6-459A-82A4-1E519C20FB34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Tests", "tests\Modules.Tests\Modules.Tests.csproj", "{E98FB703-21F8-4939-89D4-E6DD68CE213D}"
+EndProject
 Global
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {201C2D68-0B9C-4F54-AD5A-0351C0A4082B}
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{048A1207-56E9-4C99-9299-21F7D1EBD164} = {50896D86-F815-4AB7-B33C-B989806A1503}
-		{161774C6-E186-47AC-9C7F-BC7568725E47} = {A5F23231-E7AB-4B51-B72A-5464351CEE29}
-		{50896D86-F815-4AB7-B33C-B989806A1503} = {86785773-2DA2-43DC-952A-AF24D4740C69}
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{161774C6-E186-47AC-9C7F-BC7568725E47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{161774C6-E186-47AC-9C7F-BC7568725E47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{161774C6-E186-47AC-9C7F-BC7568725E47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{161774C6-E186-47AC-9C7F-BC7568725E47}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		{66D81DF4-A151-4A8B-891E-D55D9C449A50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66D81DF4-A151-4A8B-891E-D55D9C449A50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66D81DF4-A151-4A8B-891E-D55D9C449A50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66D81DF4-A151-4A8B-891E-D55D9C449A50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E98FB703-21F8-4939-89D4-E6DD68CE213D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E98FB703-21F8-4939-89D4-E6DD68CE213D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E98FB703-21F8-4939-89D4-E6DD68CE213D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E98FB703-21F8-4939-89D4-E6DD68CE213D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{161774C6-E186-47AC-9C7F-BC7568725E47} = {A5F23231-E7AB-4B51-B72A-5464351CEE29}
+		{50896D86-F815-4AB7-B33C-B989806A1503} = {86785773-2DA2-43DC-952A-AF24D4740C69}
+		{048A1207-56E9-4C99-9299-21F7D1EBD164} = {50896D86-F815-4AB7-B33C-B989806A1503}
+		{66D81DF4-A151-4A8B-891E-D55D9C449A50} = {A5F23231-E7AB-4B51-B72A-5464351CEE29}
+		{E98FB703-21F8-4939-89D4-E6DD68CE213D} = {640EFD81-97E6-459A-82A4-1E519C20FB34}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {201C2D68-0B9C-4F54-AD5A-0351C0A4082B}
 	EndGlobalSection
 EndGlobal

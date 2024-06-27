@@ -1,4 +1,4 @@
-name: CI Workflow
+name: CI
 
 env:
   DOTNET_NOLOGO: true
@@ -10,10 +10,6 @@ on:
         description: The project to build
         required: true
         type: string
-      test:
-        description: Should run tests or not
-        default: false
-        type: boolean
       test-project:
         description: The test project
         type: string
@@ -23,7 +19,7 @@ on:
           type: boolean
 
 jobs:
-  build:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -48,9 +44,10 @@ jobs:
         working-directory: ${{ inputs.project }}
         run: dotnet build -c Release
 
-      # - name: Test
-      #   working-directory: ${{ inputs.project }}
-      #   run: dotnet pack -c Release --no-restore --no-build
+      - name: Test
+        if: ${{ inputs.test-project != '' }}
+        working-directory: ${{ inputs.test-project }}
+        run: dotnet test -c Release
 
       - name: Pack
         if: ${{ inputs.publish }}
