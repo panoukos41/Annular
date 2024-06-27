@@ -1,4 +1,4 @@
-name: Build
+name: Translate Build
 
 env:
   DOTNET_NOLOGO: true

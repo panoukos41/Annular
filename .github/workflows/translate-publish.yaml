@@ -1,4 +1,4 @@
-name: Publish
+name: Translate Publish
 
 env:
   DOTNET_NOLOGO: true
@@ -13,8 +13,8 @@ on:
       - "src/Translate/*.csproj"
 
 jobs:
-  build:
-    name: Build
+  publish:
+    name: Publish
     uses: panoukos41/Annular/.github/workflows/_ci.yaml@dev
     with:
       project: src/Translate
