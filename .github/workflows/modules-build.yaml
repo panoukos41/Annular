@@ -1,0 +1,21 @@
+name: Modules Build
+
+env:
+  DOTNET_NOLOGO: true
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main, dev]
+    paths:
+      - "src/Modules/version.json"
+      - "src/Modules/*.cs"
+      - "src/Modules/*.csproj"
+
+jobs:
+  build:
+    name: Build
+    uses: panoukos41/Annular/.github/workflows/_ci.yaml@dev
+    with:
+      project: src/Modules
+      test-project: tests/Modules.Tests

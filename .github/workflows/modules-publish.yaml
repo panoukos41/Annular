@@ -1,0 +1,23 @@
+name: Modules Publish
+
+env:
+  DOTNET_NOLOGO: true
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, dev]
+    paths:
+      - "src/Modules/version.json"
+      - "src/Modules/*.cs"
+      - "src/Modules/*.csproj"
+
+jobs:
+  publish:
+    name: Publish
+    uses: panoukos41/Annular/.github/workflows/_ci.yaml@dev
+    with:
+      project: src/Modules
+      test-project: tests/Modules.Tests
+      publish: true
+    secrets: inherit
