@@ -9,7 +9,7 @@ on:
     branches: [main, dev]
     paths:
       - "src/Modules/version.json"
-      - "src/Modules/*.cs"
+      - "src/Translate/**/*.cs"
       - "src/Modules/*.csproj"
 
 jobs:

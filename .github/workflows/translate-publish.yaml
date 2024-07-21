@@ -9,7 +9,7 @@ on:
     branches: [main, dev]
     paths:
       - "src/Translate/version.json"
-      - "src/Translate/*.cs"
+      - "src/Translate/**/*.cs"
       - "src/Translate/*.csproj"
 
 jobs:
